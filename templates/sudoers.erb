@@ -1,0 +1,11 @@
+# Managed by Puppet! Do not edit locally.
+<% if comment then -%>
+#
+# <%= comment %>
+<% end -%>
+
+User_Alias  <%= name.upcase %>_USERS = <%= users.join(", ") %>
+Runas_Alias <%= name.upcase %>_RUNAS = <%= runas.join(", ") %>
+Cmnd_Alias  <%= name.upcase %>_CMNDS = <%= cmnds.join(", ") %>
+
+<%= name.upcase %>_USERS = (<%= name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= name.upcase %>_CMNDS
