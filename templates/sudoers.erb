@@ -4,8 +4,8 @@
 # <%= comment %>
 <% end -%>
 
-User_Alias  <%= name.upcase %>_USERS = <%= users.join(", ") %>
-Runas_Alias <%= name.upcase %>_RUNAS = <%= runas.join(", ") %>
-Cmnd_Alias  <%= name.upcase %>_CMNDS = <%= cmnds.join(", ") %>
+User_Alias  <%= name.upcase %>_USERS = <%= users.class == Array ? users.join(", ") : users %>
+Runas_Alias <%= name.upcase %>_RUNAS = <%= runas.class == Array ? runas.join(", ") : runas %>
+Cmnd_Alias  <%= name.upcase %>_CMNDS = <%= cmnds.class == Array ? cmnds.join(", ") : cmnds %>
 
-<%= name.upcase %>_USERS = (<%= name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= name.upcase %>_CMNDS
+<%= name.upcase %>_USERS ALL = (<%= name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= name.upcase %>_CMNDS
