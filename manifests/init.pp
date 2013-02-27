@@ -39,7 +39,11 @@ class sudo (
   $manage_sudoersd = false
 ) {
 
-    create_resources('sudo::sudoers', $sudoers)
+  create_resources('sudo::sudoers', $sudoers)
+  
+  package { 'sudo':
+    ensure  => latest
+  }
 
   file { '/etc/sudoers.d/':
     owner   => 'root',
