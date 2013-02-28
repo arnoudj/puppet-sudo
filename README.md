@@ -1,8 +1,10 @@
 # sudo
 
 Allow restricted root access for specified users. The name of the defined
-type must consist of only letters, numbers and underscores. If the name
-has incorrect characters the defined type will fail.
+type must consist of only letters, numbers and underscores and should be
+unique. If the name has incorrect characters the defined type will fail.
+Sudoers entries realised with the `sudo::sudoers` defined type  will be saved in
+`"/etc/sudoers.d/[typename]"`.
 
 ## Parameters
 
@@ -31,17 +33,17 @@ The commands which the user is allowed to run.
 
 ### tags
 
-There are eight possible tag values, NOPASSWD, PASSWD, NOEXEC, EXEC, SETENV, NOSETENV,
-LOG_INPUT, NOLOG_INPUT, LOG_OUTPUT and NOLOG_OUTPUT.
+There are eight possible tag values, `NOPASSWD`, `PASSWD`, `NOEXEC`, `EXEC`,
+`SETENV`, `NOSETENV`, `LOG_INPUT, NOLOG_INPUT`, `LOG_OUTPUT` and
+`NOLOG_OUTPUT`.
 
 ## Example
 
-  sudo::sudoers { 'worlddomination':
-    ensure  => 'present',
-    comment => 'World domination.',
-    users   => ['pinky', 'brain'],
-    runas   => 'root',
-    cmnds   => 'ALL',
-    tags    => 'NOPASSWD',
-  }
-
+    sudo::sudoers { 'worlddomination':
+      ensure  => 'present',
+      comment => 'World domination.',
+      users   => ['pinky', 'brain'],
+      runas   => 'root',
+      cmnds   => 'ALL',
+      tags    => 'NOPASSWD',
+    }
