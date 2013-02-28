@@ -36,11 +36,11 @@ describe 'sudo', :type => :class do
       'force'   => 'true'
     ) }
   end
-  
+
   context 'installing /etc/sudoers' do
     context 'puppet resource' do
       let(:params) { { :sudoers_file => 'puppet:///somewhere/sudoers_default' } }
-      
+
       it { should contain_file('/etc/sudoers').with(
         'owner'   => 'root',
         'group'   => 'root',
@@ -48,10 +48,10 @@ describe 'sudo', :type => :class do
         'source'  => 'puppet:///somewhere/sudoers_default'
       ) }
     end
-    
+
     context 'http resource' do
       let(:params) { { :sudoers_file => 'http://example.com/somewhere/sudoers_default' } }
-      
+
       it { should_not contain_file('/etc/sudoers') }
     end
   end
