@@ -11,6 +11,9 @@
 # [*manage_sudoersd*]
 #   Boolean - should puppet clean /etc/sudoers.d/ of untracked files?
 #
+# [*sudoers_file*]
+#   File that should be installed as /etc/sudoers
+#
 # === Examples
 #
 # $sudoers = {
@@ -35,12 +38,13 @@
 # Copyright 2013 Nxs Internet B.V.
 #
 class sudo (
-  $sudoers = '',
-  $manage_sudoersd = false
+  $sudoers         = '',
+  $manage_sudoersd = false,
+  $sudoers_file    = ''
 ) {
 
   create_resources('sudo::sudoers', $sudoers)
-  
+
   package { 'sudo':
     ensure  => latest
   }
@@ -52,6 +56,16 @@ class sudo (
     purge   => $manage_sudoersd,
     recurse => $manage_sudoersd,
     force   => $manage_sudoersd,
+  }
+
+  if $sudoers_file =~ /^puppet:\/\// {
+    file { '/etc/sudoers':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0400',
+      source  => $sudoers_file,
+    }
   }
 
 }
