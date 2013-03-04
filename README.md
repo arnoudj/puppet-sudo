@@ -1,19 +1,29 @@
-# sudo
+# arnoudj/puppet-sudo
 
 Allow restricted root access for specified users. The name of the defined
 type must consist of only letters, numbers and underscores and should be
 unique. If the name has incorrect characters the defined type will fail.
-Sudoers entries realised with the `sudo::sudoers` defined type  will be saved in
-`"/etc/sudoers.d/[typename]"`.
+Sudoers entries realised with the `sudo::sudoers` defined type will be
+stored in `"/etc/sudoers.d/[typename]"`.
 
-## Parameters
+## Parameters for class sudo
+
+### sudoers
+
+Hash of sudoers entries, which will be created via sudo::sudoers.
+
+### manage_sudoersd
+
+Boolean - should puppet clean /etc/sudoers.d/ of untracked files?
+
+## Parameters for type sudo::sudoers
 
 ### ensure
 
-  Controls the existence of the sudoers entry. Set this attribute to
-  present to ensure the sudoers entry exists. Set it to absent to
-  delete any computer records with this name Valid values are present,
-  absent.
+Controls the existence of the sudoers entry. Set this attribute to
+present to ensure the sudoers entry exists. Set it to absent to
+delete any computer records with this name Valid values are present,
+absent.
 
 ### users
 
@@ -39,6 +49,8 @@ There are eight possible tag values, `NOPASSWD`, `PASSWD`, `NOEXEC`, `EXEC`,
 
 ## Example
 
+A sudoers entry can be defined within a class or node definition:
+
     sudo::sudoers { 'worlddomination':
       ensure  => 'present',
       comment => 'World domination.',
@@ -47,3 +59,27 @@ There are eight possible tag values, `NOPASSWD`, `PASSWD`, `NOEXEC`, `EXEC`,
       cmnds   => 'ALL',
       tags    => 'NOPASSWD',
     }
+
+or via an ENC:
+
+    ---
+      classes:
+        sudo:
+          sudoers:
+            worlddomination:
+              ensure: present
+              comment: "World Domination."
+              users:
+                - pinky
+                - brain
+              runas: 
+                - root
+              cmnds:
+                - ALL
+              tags:
+                - NOPASSWD
+
+## Contributors
+
+* `Justin Lambert`
+  * Added spec tests, travis integration and some code changes.
