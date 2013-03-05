@@ -57,9 +57,9 @@ A sudoers entry can be defined within a class or node definition:
       ensure  => 'present',
       comment => 'World domination.',
       users   => ['pinky', 'brain'],
-      runas   => 'root',
-      cmnds   => 'ALL',
-      tags    => 'NOPASSWD',
+      runas   => ['root'],
+      cmnds   => ['ALL'],
+      tags    => ['NOPASSWD'],
     }
 
 or via an ENC:
