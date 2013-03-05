@@ -38,7 +38,7 @@
 # Copyright 2013 Nxs Internet B.V.
 #
 class sudo (
-  $sudoers         = '',
+  $sudoers         = [],
   $manage_sudoersd = false,
   $sudoers_file    = ''
 ) {

@@ -1,5 +1,7 @@
 # arnoudj/puppet-sudo
 
+[![Build Status](https://travis-ci.org/arnoudj/puppet-sudo.png?branch=master)](https://travis-ci.org/arnoudj/puppet-sudo)
+
 Allow restricted root access for specified users. The name of the defined
 type must consist of only letters, numbers and underscores and should be
 unique. If the name has incorrect characters the defined type will fail.
