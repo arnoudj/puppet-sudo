@@ -83,5 +83,5 @@ or via an ENC:
 
 ## Contributors
 
-* `Justin Lambert`
+* Justin Lambert
   * Added spec tests, travis integration and some code changes.
