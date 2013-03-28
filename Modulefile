@@ -1,5 +1,5 @@
 name    'arnoudj-sudo'
-version '0.2.2'
+version '0.3.0'
 summary 'Manage sudoers'
 description 'Manage sudoers'
 source 'git://github.com/arnoudj/arnoudj-sudo'
