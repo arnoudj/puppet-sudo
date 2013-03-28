@@ -50,7 +50,7 @@ class sudo (
   }
 
   file { '/etc/sudoers.d/':
-    ensure  => directory
+    ensure  => directory,
     owner   => 'root',
     group   => 'root',
     mode    => '0750',
