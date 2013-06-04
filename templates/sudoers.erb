@@ -1,11 +1,11 @@
 # Managed by Puppet! Do not edit locally.
-<% if comment then -%>
+<% if @comment then -%>
 #
-# <%= comment %>
+# <%= @comment %>
 <% end -%>
 
-User_Alias  <%= name.upcase %>_USERS = <%= users.class == Array ? users.join(", ") : users %>
-Runas_Alias <%= name.upcase %>_RUNAS = <%= runas.class == Array ? runas.join(", ") : runas %>
-Cmnd_Alias  <%= name.upcase %>_CMNDS = <%= cmnds.class == Array ? cmnds.join(", ") : cmnds %>
+User_Alias  <%= @name.upcase %>_USERS = <%= @users.class == Array ? @users.join(", ") : @users %>
+Runas_Alias <%= @name.upcase %>_RUNAS = <%= @runas.class == Array ? @runas.join(", ") : @runas %>
+Cmnd_Alias  <%= @name.upcase %>_CMNDS = <%= @cmnds.class == Array ? @cmnds.join(", ") : @cmnds %>
 
-<%= name.upcase %>_USERS ALL = (<%= name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= name.upcase %>_CMNDS
+<%= @name.upcase %>_USERS ALL = (<%= @name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @name.upcase %>_CMNDS
