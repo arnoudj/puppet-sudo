@@ -64,7 +64,7 @@ class sudo (
       ensure  => file,
       owner   => 'root',
       group   => 'root',
-      mode    => '0400',
+      mode    => '0440',
       source  => $sudoers_file,
     }
   }
