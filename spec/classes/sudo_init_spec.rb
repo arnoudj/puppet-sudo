@@ -44,7 +44,7 @@ describe 'sudo', :type => :class do
       it { should contain_file('/etc/sudoers').with(
         'owner'   => 'root',
         'group'   => 'root',
-        'mode'    => '0400',
+        'mode'    => '0440',
         'source'  => 'puppet:///somewhere/sudoers_default'
       ) }
     end
