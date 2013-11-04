@@ -47,11 +47,12 @@
 #
 define sudo::sudoers (
   $users,
-  $cmnds   = 'ALL',
-  $comment = undef,
-  $ensure  = 'present',
-  $runas   = ['root'],
-  $tags    = [],
+  $cmnds    = 'ALL',
+  $comment  = undef,
+  $ensure   = 'present',
+  $runas    = ['root'],
+  $tags     = [],
+  $defaults = [],
 ) {
   if $name !~ /^[A-Za-z0-9_]+$/ {
     fail 'Name should consist of letters numbers or underscores.'
