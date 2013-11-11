@@ -25,16 +25,23 @@
 #   The commands which the user is allowed to run.
 #
 # [*tags*]
+#   A command may have zero or more tags associated with it.  There are
+#   eight possible tag values, NOPASSWD, PASSWD, NOEXEC, EXEC, SETENV,
+#   NOSETENV, LOG_INPUT, NOLOG_INPUT, LOG_OUTPUT and NOLOG_OUTPUT.
+#
+# [*defaults*]
+#   Override some of the compiled in default values for sudo.
 #
 # === Examples
 #
 # sudo::sudoers { 'worlddomination':
-#   ensure  => 'present',
-#   comment => 'World domination.',
-#   users   => ['pinky', 'brain'],
-#   runas   => ['root'],
-#   cmnds   => ['/bin/bash'],
-#   tags    => ['NOPASSWD'],
+#   ensure   => 'present',
+#   comment  => 'World domination.',
+#   users    => ['pinky', 'brain'],
+#   runas    => ['root'],
+#   cmnds    => ['/bin/bash'],
+#   tags     => ['NOPASSWD'],
+#   defaults => [ 'env_keep += "SSH_AUTH_SOCK"' ]
 # }
 #
 # === Authors
