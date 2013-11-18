@@ -7,7 +7,7 @@
 User_Alias  <%= @name.upcase %>_USERS = <%= @users.class == Array ? @users.join(", ") : @users %>
 Runas_Alias <%= @name.upcase %>_RUNAS = <%= @runas.class == Array ? @runas.join(", ") : @runas %>
 Cmnd_Alias  <%= @name.upcase %>_CMNDS = <%= @cmnds.class == Array ? @cmnds.join(", ") : @cmnds %>
-<% if @defaults then -%>
+<% if not @defaults.empty? then -%>
 
 Defaults:<%= @name.upcase %>_USERS <%= @defaults.class == Array ? @defaults.join(", ") : @defaults %>
 <% end -%>
