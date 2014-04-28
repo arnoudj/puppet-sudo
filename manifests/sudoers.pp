@@ -61,11 +61,16 @@ define sudo::sudoers (
   $tags     = [],
   $defaults = [],
 ) {
-  if $name !~ /^[A-Za-z0-9_]+$/ {
-    fail 'Name should consist of letters numbers or underscores.'
+
+  # Filename must not contain dots as per the manual.
+  # As having dots in a username is actually valid, let's fudge
+  $fname = regsubst($name, '\.', '_', 'G')
+
+  if $fname !~ /^[A-Za-z0-9_]+$/ {
+    fail "File ${fname} (for ${name}) should consist of letters numbers or underscores."
   }
   if $ensure == 'present' {
-    file { "/etc/sudoers.d/$name":
+    file { "/etc/sudoers.d/$fname":
       content => template('sudo/sudoers.erb'),
       owner   => 'root',
       group   => 'root',
