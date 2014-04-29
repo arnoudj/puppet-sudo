@@ -62,15 +62,18 @@ define sudo::sudoers (
   $defaults = [],
 ) {
 
-  # Filename must not contain dots as per the manual.
-  # As having dots in a username is actually valid, let's fudge
-  $fname = regsubst($name, '\.', '_', 'G')
+  # filename as per the manual or aliases as per the sudoer spec must not
+  # contain dots.
+  # As having dots in a username is legit, let's fudge
+  $sane_name = regsubst($name, '\.', '_', 'G')
+  $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
 
-  if $fname !~ /^[A-Za-z0-9_]+$/ {
-    fail "File ${fname} (for ${name}) should consist of letters numbers or underscores."
+  if $sane_name !~ /^[A-Za-z0-9_]+$/ {
+    fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
   }
+
   if $ensure == 'present' {
-    file { "/etc/sudoers.d/$fname":
+    file { $sudoers_user_file:
       content => template('sudo/sudoers.erb'),
       owner   => 'root',
       group   => 'root',
@@ -78,7 +81,7 @@ define sudo::sudoers (
     }
   }
   else {
-    file { "/etc/sudoers.d/$name":
+    file { $sudoers_user_file:
       ensure => 'absent',
     }
   }
