@@ -38,12 +38,12 @@
 # Copyright 2013 Nxs Internet B.V.
 #
 class sudo (
-  $sudoers         = {},
+  $_sudoers = hiera_hash('sudo::sudoers', {}),
   $manage_sudoersd = false,
   $sudoers_file    = ''
 ) {
 
-  create_resources('sudo::sudoers', $sudoers)
+  create_resources('sudo::sudoers', $_sudoers)
 
   package { 'sudo':
     ensure  => latest
