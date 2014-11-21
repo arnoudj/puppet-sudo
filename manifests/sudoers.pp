@@ -65,16 +65,16 @@ define sudo::sudoers (
     fail 'Name should consist of letters numbers or underscores.'
   }
   if $ensure == 'present' {
-    file { "/etc/sudoers.d/$name":
-      content => template('sudo/sudoers.erb'),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0440',
+    file { "/etc/sudoers.d/${name}":
+      content      => template('sudo/sudoers.erb'),
+      owner        => 'root',
+      group        => 'root',
+      mode         => '0440',
       validate_cmd => '/usr/sbin/visudo -c -f %',
     }
   }
   else {
-    file { "/etc/sudoers.d/$name":
+    file { "/etc/sudoers.d/${name}":
       ensure => 'absent',
     }
   }
