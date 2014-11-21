@@ -25,6 +25,7 @@ describe 'sudo::sudoers', :type => :define do
     it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/^Cmnd_Alias\s*WORLDDOMINATION_CMNDS\s=\s\/bin\/bash$/) }
     it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/^WORLDDOMINATION_USERS\sALL\s=\s\(WORLDDOMINATION_RUNAS\)\sLOG_INPUT:\sLOG_OUTPUT:\sWORLDDOMINATION_CMNDS$/) }
     it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/Defaults:WORLDDOMINATION_USERS env_keep \+= "SSH_AUTH_SOCK"/) }
+    it { should contain_file('/etc/sudoers.d/worlddomination').with_validate_cmd('/usr/sbin/visudo -c -f %') }
   end
 
   context 'absent' do
