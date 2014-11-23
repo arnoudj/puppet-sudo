@@ -70,7 +70,6 @@ define sudo::sudoers (
       owner        => 'root',
       group        => 'root',
       mode         => '0440',
-      validate_cmd => '/usr/sbin/visudo -c -f %',
     }
   }
   else {
