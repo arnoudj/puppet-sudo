@@ -71,6 +71,12 @@ define sudo::sudoers (
       group        => 'root',
       mode         => '0440',
     }
+    if versioncmp($::puppetversion, '3.5') >= 0 {
+      File["/etc/sudoers.d/${name}"] { validate_cmd => '/usr/sbin/visudo -c -f %' }
+    }
+    else {
+      validate_cmd(template('sudo/sudoers.erb'), '/usr/sbin/visudo -c -f', 'Visudo failed to validate sudoers content')
+    }
   }
   else {
     file { "/etc/sudoers.d/${name}":
