@@ -66,10 +66,10 @@ define sudo::sudoers (
   }
   if $ensure == 'present' {
     file { "/etc/sudoers.d/${name}":
-      content      => template('sudo/sudoers.erb'),
-      owner        => 'root',
-      group        => 'root',
-      mode         => '0440',
+      content => template('sudo/sudoers.erb'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0440',
     }
     if versioncmp($::puppetversion, '3.5') >= 0 {
       File["/etc/sudoers.d/${name}"] { validate_cmd => '/usr/sbin/visudo -c -f %' }
