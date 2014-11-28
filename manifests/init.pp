@@ -61,11 +61,11 @@ class sudo (
 
   if $sudoers_file =~ /^puppet:\/\// {
     file { '/etc/sudoers':
-      ensure  => file,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0440',
-      source  => $sudoers_file,
+      ensure => file,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0440',
+      source => $sudoers_file,
     }
   }
 
