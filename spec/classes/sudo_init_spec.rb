@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'sudo', :type => :class do
   $testdata = {
-     'worlddomination' => {
+     'world.domination' => {
        'ensure'  => 'present',
        'comment' => 'World domination.',
        'users'   => ['pinky', 'brain'],
