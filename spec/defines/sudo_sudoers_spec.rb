@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe 'sudo::sudoers', :type => :define do
-  let(:title) { 'worlddomination' }
+  let(:title) { 'world.domination' }
 
   context 'minimum params' do
     let(:params) { { :users => ['joe'] } }
 
-    it { should contain_file('/etc/sudoers.d/worlddomination') }
+    it { should contain_file('/etc/sudoers.d/world_domination') }
   end
 
   context 'setting all params' do
