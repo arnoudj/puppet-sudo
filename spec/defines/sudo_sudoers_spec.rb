@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe 'sudo::sudoers', :type => :define do
-  let(:title) { 'worlddomination' }
+  let(:title) { 'world.domination' }
 
   context 'minimum params' do
     let(:params) { { :users => ['joe'] } }
 
-    it { should contain_file('/etc/sudoers.d/worlddomination') }
+    it { should contain_file('/etc/sudoers.d/world_domination') }
   end
 
   context 'setting all params' do
@@ -19,12 +19,12 @@ describe 'sudo::sudoers', :type => :define do
       :defaults => [ 'env_keep += "SSH_AUTH_SOCK"' ]
       } }
 
-    it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/^# Today\swe\'re\sgoing\sto\stake\sover\sthe\sworld$/) }
-    it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/^User_Alias\s*WORLDDOMINATION_USERS\s=\spinky,\sbrain$/) }
-    it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/^Runas_Alias\s*WORLDDOMINATION_RUNAS\s=\sanimaniacs$/) }
-    it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/^Cmnd_Alias\s*WORLDDOMINATION_CMNDS\s=\s\/bin\/bash$/) }
-    it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/^WORLDDOMINATION_USERS\sALL\s=\s\(WORLDDOMINATION_RUNAS\)\sLOG_INPUT:\sLOG_OUTPUT:\sWORLDDOMINATION_CMNDS$/) }
-    it { should contain_file('/etc/sudoers.d/worlddomination').with_content(/Defaults:WORLDDOMINATION_USERS env_keep \+= "SSH_AUTH_SOCK"/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^# Today\swe\'re\sgoing\sto\stake\sover\sthe\sworld$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^User_Alias\s*WORLD_DOMINATION_USERS\s=\spinky,\sbrain$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^Runas_Alias\s*WORLD_DOMINATION_RUNAS\s=\sanimaniacs$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^Cmnd_Alias\s*WORLD_DOMINATION_CMNDS\s=\s\/bin\/bash$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^WORLD_DOMINATION_USERS\sALL\s=\s\(WORLD_DOMINATION_RUNAS\)\sLOG_INPUT:\sLOG_OUTPUT:\sWORLD_DOMINATION_CMNDS$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/Defaults:WORLD_DOMINATION_USERS env_keep \+= "SSH_AUTH_SOCK"/) }
 
   end
 
@@ -33,20 +33,20 @@ describe 'sudo::sudoers', :type => :define do
       let(:params) { { :users => ['joe'] } }
       let(:facts) {{ :puppetversion => Puppet.version }}
 
-      it { should contain_file('/etc/sudoers.d/worlddomination').with_validate_cmd('/usr/sbin/visudo -c -f %') }
+      it { should contain_file('/etc/sudoers.d/world_domination').with_validate_cmd('/usr/sbin/visudo -c -f %') }
     end
   else
     context "validating content with puppet #{Puppet.version}" do
       let(:params) { { :users => ['joe'] } }
       let(:facts) {{ :puppetversion => Puppet.version }}
 
-      it { should contain_file('/etc/sudoers.d/worlddomination').with_validate_cmd(nil) }
+      it { should contain_file('/etc/sudoers.d/world_domination').with_validate_cmd(nil) }
     end
   end
 
   context 'absent' do
     let(:params) { { :users => 'notneeded', :ensure => 'absent' } }
 
-    it { should contain_file('/etc/sudoers.d/worlddomination').with_ensure('absent')}
+    it { should contain_file('/etc/sudoers.d/world_domination').with_ensure('absent')}
   end
 end

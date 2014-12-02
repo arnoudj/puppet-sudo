@@ -61,25 +61,33 @@ define sudo::sudoers (
   $tags     = [],
   $defaults = [],
 ) {
-  if $name !~ /^[A-Za-z0-9_]+$/ {
-    fail 'Name should consist of letters numbers or underscores.'
+
+  # filename as per the manual or aliases as per the sudoer spec must not
+  # contain dots.
+  # As having dots in a username is legit, let's fudge
+  $sane_name = regsubst($name, '\.', '_', 'G')
+  $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
+
+  if $sane_name !~ /^[A-Za-z0-9_]+$/ {
+    fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
   }
+
   if $ensure == 'present' {
-    file { "/etc/sudoers.d/${name}":
+    file { $sudoers_user_file:
       content => template('sudo/sudoers.erb'),
       owner   => 'root',
       group   => 'root',
       mode    => '0440',
     }
     if versioncmp($::puppetversion, '3.5') >= 0 {
-      File["/etc/sudoers.d/${name}"] { validate_cmd => '/usr/sbin/visudo -c -f %' }
+      File[$sudoers_user_file] { validate_cmd => '/usr/sbin/visudo -c -f %' }
     }
     else {
       validate_cmd(template('sudo/sudoers.erb'), '/usr/sbin/visudo -c -f', 'Visudo failed to validate sudoers content')
     }
   }
   else {
-    file { "/etc/sudoers.d/${name}":
+    file { $sudoers_user_file:
       ensure => 'absent',
     }
   }

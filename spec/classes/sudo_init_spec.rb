@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'sudo', :type => :class do
   $testdata = {
-     'worlddomination' => {
+     'world.domination' => {
        'ensure'  => 'present',
        'comment' => 'World domination.',
        'users'   => ['pinky', 'brain'],
@@ -24,7 +24,7 @@ describe 'sudo', :type => :class do
   context 'create_resources' do
     let(:params) { { :sudoers => $testdata } }
 
-    it { should contain_sudo__sudoers('worlddomination') }
+    it { should contain_sudo__sudoers('world.domination') }
   end
 
   context 'managing sudoers.d' do

@@ -4,12 +4,13 @@
 # <%= @comment %>
 <% end -%>
 
-User_Alias  <%= @name.upcase %>_USERS = <%= @users.class == Array ? @users.join(", ") : @users %>
-Runas_Alias <%= @name.upcase %>_RUNAS = <%= @runas.class == Array ? @runas.join(", ") : @runas %>
-Cmnd_Alias  <%= @name.upcase %>_CMNDS = <%= @cmnds.class == Array ? @cmnds.join(", ") : @cmnds %>
+User_Alias  <%= @sane_name.upcase %>_USERS = <%= @users.class == Array ? @users.join(", ") : @users %>
+Runas_Alias <%= @sane_name.upcase %>_RUNAS = <%= @runas.class == Array ? @runas.join(", ") : @runas %>
+Cmnd_Alias  <%= @sane_name.upcase %>_CMNDS = <%= @cmnds.class == Array ? @cmnds.join(", ") : @cmnds %>
+
 <% if not @defaults.empty? then -%>
 
-Defaults:<%= @name.upcase %>_USERS <%= @defaults.class == Array ? @defaults.join(", ") : @defaults %>
+Defaults:<%= @sane_name.upcase %>_USERS <%= @defaults.class == Array ? @defaults.join(", ") : @defaults %>
 <% end -%>
 
-<%= @name.upcase %>_USERS ALL = (<%= @name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @name.upcase %>_CMNDS
+<%= @sane_name.upcase %>_USERS ALL = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
