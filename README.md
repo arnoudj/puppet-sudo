@@ -110,4 +110,4 @@ or via an ENC:
 
 ## Contributors
 
-Thanks to [all contributors](https://travis-ci.org/arnoudj/puppet-sudo.png?branch=master).
+Thanks to [all contributors](https://github.com/arnoudj/puppet-sudo/graphs/contributors).
