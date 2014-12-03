@@ -15,6 +15,9 @@
 # [*users*]
 #   Array of users that are allowed to execute the command(s).
 #
+# [*hosts*]
+# Array of hosts that the command(s) can be executed on. Denying hosts using a bang/exclamation point may also be used.
+#
 # [*cmnds*]
 #   List of commands that the user can run.
 #
@@ -54,6 +57,7 @@
 #
 define sudo::sudoers (
   $users,
+  $hosts    = 'ALL',
   $cmnds    = 'ALL',
   $comment  = undef,
   $ensure   = 'present',

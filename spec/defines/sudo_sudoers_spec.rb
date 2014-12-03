@@ -23,7 +23,7 @@ describe 'sudo::sudoers', :type => :define do
     it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^User_Alias\s*WORLD_DOMINATION_USERS\s=\spinky,\sbrain$/) }
     it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^Runas_Alias\s*WORLD_DOMINATION_RUNAS\s=\sanimaniacs$/) }
     it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^Cmnd_Alias\s*WORLD_DOMINATION_CMNDS\s=\s\/bin\/bash$/) }
-    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^WORLD_DOMINATION_USERS\sALL\s=\s\(WORLD_DOMINATION_RUNAS\)\sLOG_INPUT:\sLOG_OUTPUT:\sWORLD_DOMINATION_CMNDS$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^WORLD_DOMINATION_USERS\sWORLD_DOMINATION_HOSTS\s=\s\(WORLD_DOMINATION_RUNAS\)\sLOG_INPUT:\sLOG_OUTPUT:\sWORLD_DOMINATION_CMNDS$/) }
     it { should contain_file('/etc/sudoers.d/world_domination').with_content(/Defaults:WORLD_DOMINATION_USERS env_keep \+= "SSH_AUTH_SOCK"/) }
 
   end
