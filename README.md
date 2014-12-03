@@ -43,6 +43,10 @@ absent.
 
 Array of users that are allowed to execute the command(s).
 
+### hosts
+
+Array of hosts that the command(s) can be executed on. Denying hosts using a bang/exclamation point may also be used.
+
 ### cmnds
 
 List of commands that the user can run.
@@ -73,6 +77,7 @@ A sudoers entry can be defined within a class or node definition:
       ensure   => 'present',
       comment  => 'World domination.',
       users    => ['pinky', 'brain'],
+      hosts    => ['foo.lab', 'bar.lab'],
       runas    => ['root'],
       cmnds    => ['ALL'],
       tags     => ['NOPASSWD'],
@@ -91,6 +96,9 @@ or via an ENC:
               users:
                 - pinky
                 - brain
+              hosts:
+                - foo.lab
+                - bar.lab
               runas: 
                 - root
               cmnds:
