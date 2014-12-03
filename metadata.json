@@ -1,0 +1,14 @@
+{
+  "name": "arnoudj-sudo",
+  "version": "1.2.0",
+  "author": "Arnoud de Jonge",
+  "license": "Licensed under (Apache 2.0)",
+  "summary": "Manage sudoers",
+  "source": "https://github.com/arnoudj/puppet-sudo",
+  "project_page": "https://github.com/arnoudj/puppet-sudo",
+  "issues_url": "https://github.com/arnoudj/puppet-sudo",
+  "tags": ["sudo", "security"],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=3.2.0" }
+  ]
+}

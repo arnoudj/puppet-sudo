@@ -110,5 +110,4 @@ or via an ENC:
 
 ## Contributors
 
-* Justin Lambert
-  * Added spec tests, travis integration and some code changes.
+Thanks to [all contributors](https://travis-ci.org/arnoudj/puppet-sudo.png?branch=master).
