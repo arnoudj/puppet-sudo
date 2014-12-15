@@ -16,8 +16,8 @@ Cmnd_Alias  <%= @sane_name.upcase %>_CMNDS = <%= @cmnds.class == Array ? @cmnds.
 Defaults:<%= @sane_name.upcase %>_USERS <%= @defaults.class == Array ? @defaults.join(", ") : @defaults %>
 <% end -%>
 
-<% if not @group == 'undef' then -%>
-%<%= @group %> <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
-<% else -%>
+<% if @users then -%>
 <%= @sane_name.upcase %>_USERS <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
+<% else -%>
+%<%= @group %> <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
 <% end -%>
