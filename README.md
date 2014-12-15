@@ -112,6 +112,18 @@ or via an ENC:
               defaults:
                 - 'env_keep += "SSH_AUTH_SOCK"'
 
+## Run syntax, lint and unit tests
+
+```
+bundle exec rake test
+```
+
+## Run [beaker](https://github.com/puppetlabs/beaker) acceptance tests
+
+```
+bundle exec rspec spec/acceptance/
+```
+
 ## Contributors
 
 Thanks to [all contributors](https://github.com/arnoudj/puppet-sudo/graphs/contributors).
