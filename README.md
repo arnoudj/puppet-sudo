@@ -99,7 +99,7 @@ or via an ENC:
               hosts:
                 - foo.lab
                 - bar.lab
-              runas: 
+              runas:
                 - root
               cmnds:
                 - ALL
