@@ -1,2 +1,6 @@
-spec/fixtures
-pkg
+pkg/
+Gemfile.lock
+.rspec_system
+*.swp
+.bundle/
+spec/fixtures/
