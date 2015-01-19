@@ -1,7 +1,7 @@
 # == Define: sudo
 #
 # Allow restricted root access for specified users. The name of the defined
-# type must consist of only letters, numbers and underscores. If the name
+# type must consist of only letters, numbers, dashes and underscores. If the name
 # has incorrect characters the defined type will fail.
 #
 # === Parameters
@@ -14,6 +14,9 @@
 #
 # [*users*]
 #   Array of users that are allowed to execute the command(s).
+#
+# [*group*]
+#   Group that can run the listed commands. Cannot be combined with users.
 #
 # [*hosts*]
 # Array of hosts that the command(s) can be executed on. Denying hosts using a bang/exclamation point may also be used.
@@ -56,7 +59,8 @@
 # Copyright 2013 Nxs Internet B.V.
 #
 define sudo::sudoers (
-  $users,
+  $users    = undef,
+  $group    = undef,
   $hosts    = 'ALL',
   $cmnds    = 'ALL',
   $comment  = undef,
@@ -72,8 +76,12 @@ define sudo::sudoers (
   $sane_name = regsubst($name, '\.', '_', 'G')
   $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
 
-  if $sane_name !~ /^[A-Za-z0-9_]+$/ {
-    fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
+  if $sane_name !~ /^[A-Za-z0-9_\-]+$/ {
+    fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters, numbers, dashes or underscores."
+  }
+
+  if $users != undef and $group != undef {
+    fail 'You cannot define both a list of users and a group. Choose one.'
   }
 
   if $ensure == 'present' {
