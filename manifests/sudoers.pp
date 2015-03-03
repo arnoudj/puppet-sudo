@@ -15,6 +15,9 @@
 # [*users*]
 #   Array of users that are allowed to execute the command(s).
 #
+# [*group*]
+#   Group that can run the listed commands. Cannot be combined with users.
+#
 # [*hosts*]
 # Array of hosts that the command(s) can be executed on. Denying hosts using a bang/exclamation point may also be used.
 #
@@ -49,14 +52,15 @@
 #
 # === Authors
 #
-# Arnoud de Jonge <arnoud.dejonge@nxs.nl>
+# Arnoud de Jonge <arnoud@de-jonge.org>
 #
 # === Copyright
 #
-# Copyright 2013 Nxs Internet B.V.
+# Copyright 2015 Arnoud de Jonge
 #
 define sudo::sudoers (
-  $users,
+  $users    = undef,
+  $group    = undef,
   $hosts    = 'ALL',
   $cmnds    = 'ALL',
   $comment  = undef,
@@ -74,6 +78,10 @@ define sudo::sudoers (
 
   if $sane_name !~ /^[A-Za-z0-9_]+$/ {
     fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
+  }
+
+  if $users != undef and $group != undef {
+    fail 'You cannot define both a list of users and a group. Choose one.'
   }
 
   if $ensure == 'present' {
