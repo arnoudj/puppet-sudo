@@ -31,11 +31,11 @@
 #
 # === Authors
 #
-# Arnoud de Jonge <arnoud.dejonge@nxs.nl>
+# Arnoud de Jonge <arnoud@de-jonge.org>
 #
 # === Copyright
 #
-# Copyright 2013 Nxs Internet B.V.
+# Copyright 2015 Arnoud de Jonge
 #
 class sudo (
   $sudoers         = {},
