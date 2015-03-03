@@ -12,8 +12,7 @@ Runas_Alias <%= @sane_name.upcase %>_RUNAS = <%= @runas.class == Array ? @runas.
 Cmnd_Alias  <%= @sane_name.upcase %>_CMNDS = <%= @cmnds.class == Array ? @cmnds.join(", ") : @cmnds %>
 
 <% if not @defaults.empty? then -%>
-
-Defaults:<%= @sane_name.upcase %>_USERS <%= @defaults.class == Array ? @defaults.join(", ") : @defaults %>
+Defaults!<%= @sane_name.upcase %>_CMNDS <%= @defaults.class == Array ? @defaults.join(", ") : @defaults %>
 <% end -%>
 
 <% if @users then -%>
