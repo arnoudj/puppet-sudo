@@ -76,7 +76,7 @@ define sudo::sudoers (
   $sane_name = regsubst($name, '\.', '_', 'G')
   $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
 
-  if $sane_name !~ /^[A-Za-z0-9_]+$/ {
+  if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
     fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
   }
 
