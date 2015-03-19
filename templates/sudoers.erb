@@ -1,4 +1,9 @@
 # Managed by Puppet! Do not edit locally.
+
+<%-
+  tags = @tags.class == Array ? @tags.map{|x| x.sub(/$/, ':')}.join(' ') : "#{@tags}:"
+-%>
+
 <% if @comment then -%>
 #
 # <%= @comment %>
@@ -16,7 +21,7 @@ Defaults!<%= @sane_name.upcase %>_CMNDS <%= @defaults.class == Array ? @defaults
 <% end -%>
 
 <% if @users then -%>
-<%= @sane_name.upcase %>_USERS <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
+<%= @sane_name.upcase %>_USERS <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= tags %> <%= @sane_name.upcase %>_CMNDS
 <% else -%>
-%<%= @group %> <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
+%<%= @group %> <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= tags %> <%= @sane_name.upcase %>_CMNDS
 <% end -%>
