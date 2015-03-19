@@ -45,6 +45,24 @@ describe 'sudo::sudoers', :type => :define do
     it { should contain_file('/etc/sudoers.d/world_domination').with_content(/Defaults!WORLD_DOMINATION_CMNDS env_keep \+= "SSH_AUTH_SOCK"/) }
 
   end
+
+  context 'using strings instead of arrays' do
+    let(:params) { {
+      :users    => 'riton',
+      :runas    => 'root',
+      :cmnds    => '/bin/bash',
+      :tags     => 'NOPASSWD',
+      :defaults => 'env_keep += "KRB5CCNAME"'
+    } }
+
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^User_Alias\s*WORLD_DOMINATION_USERS\s=\sriton$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^Runas_Alias\s*WORLD_DOMINATION_RUNAS\s=\sroot$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^Cmnd_Alias\s*WORLD_DOMINATION_CMNDS\s=\s\/bin\/bash$/) }
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^WORLD_DOMINATION_USERS\sWORLD_DOMINATION_HOSTS\s=\s\(WORLD_DOMINATION_RUNAS\)\sNOPASSWD:\sWORLD_DOMINATION_CMNDS$/) }
+
+    it { should contain_file('/etc/sudoers.d/world_domination').with_content(/Defaults!WORLD_DOMINATION_CMNDS env_keep \+= "KRB5CCNAME"/) }
+  end
+
   if (Puppet.version >= '3.5.0')
     context "validating content with puppet #{Puppet.version}" do
       let(:params) { { :users => ['joe'] } }
