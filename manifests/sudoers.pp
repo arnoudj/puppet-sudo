@@ -38,6 +38,9 @@
 # [*defaults*]
 #   Override some of the compiled in default values for sudo.
 #
+# [*prefix*]
+#   Prefix for the file, when ordering matters.
+#
 # === Examples
 #
 # sudo::sudoers { 'worlddomination':
@@ -68,16 +71,29 @@ define sudo::sudoers (
   $runas    = ['root'],
   $tags     = [],
   $defaults = [],
+  $prefix   = undef,
 ) {
+
+  # filename prefix, since the order of multiple matching rules matters (the
+  # last one found is used), optional and with '_' separator added
+  if $prefix != undef {
+    if $prefix !~ /^[A-Za-z0-9_-]+$/ {
+      fail "Invalid file prefix \"${prefix}\", should consist of letters numbers underscores or dashes"
+    } else {
+      $sane_prefix = "${prefix}_"
+    }
+  } else {
+    $sane_prefix = ''
+  }
 
   # filename as per the manual or aliases as per the sudoer spec must not
   # contain dots.
   # As having dots in a username is legit, let's fudge
   $sane_name = regsubst($name, '\.', '_', 'G')
-  $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
+  $sudoers_user_file = "/etc/sudoers.d/${sane_prefix}${sane_name}"
 
   if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
-    fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
+    fail "Will not create sudoers file \"${sudoers_user_file}\" (for \"${name}\") should consist of letters numbers or underscores."
   }
 
   if $users != undef and $group != undef {
