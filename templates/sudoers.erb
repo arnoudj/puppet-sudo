@@ -24,6 +24,8 @@ Defaults:<%= @sane_name.upcase.gsub("-", "_") %>_USERS <%= @defaults.class == Ar
 <% if @users then -%>
 <%= @sane_name.upcase.gsub("-", "_") %>_USERS <%= @sane_name.upcase.gsub("-", "_") %>_HOSTS = (<%= @sane_name.upcase.gsub("-", "_") %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase.gsub("-", "_") %>_CMNDS
 <% else -%>
-%<%= @group %> <%= @sane_name.upcase.gsub("-", "_") %>_HOSTS = (<%= @sane_name.upcase.gsub("-", "_") %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase.gsub("-", "_") %>_CMNDS
+<% @group.each do |this_group| -%>
+%<%= this_group %> <%= @sane_name.upcase.gsub("-", "_") %>_HOSTS = (<%= @sane_name.upcase.gsub("-", "_") %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase.gsub("-", "_") %>_CMNDS
+<% end -%>
 <% end -%>
 
