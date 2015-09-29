@@ -49,7 +49,7 @@ class sudo (
     ensure  => latest
   }
 
-  file { '/etc/sudoers.d/':
+  file { '/etc/sudoers.d':
     ensure  => directory,
     owner   => 'root',
     group   => 'root',
