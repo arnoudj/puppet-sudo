@@ -45,9 +45,7 @@ class sudo (
 
   create_resources('sudo::sudoers', $sudoers)
 
-  package { 'sudo':
-    ensure  => latest
-  }
+  ensure_packages( ['sudo'] )
 
   file { '/etc/sudoers.d':
     ensure  => directory,
