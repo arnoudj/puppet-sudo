@@ -45,6 +45,22 @@ describe 'sudo::sudoers', :type => :define do
     it { should contain_file('/etc/sudoers.d/world_domination').with_content(/Defaults!WORLD_DOMINATION_CMNDS env_keep \+= "SSH_AUTH_SOCK"/) }
 
   end
+
+  context 'setting sudo with a prefix' do
+    let(:params) { {
+      :users    => ['pinky', 'brain'],
+      :comment  => 'Today we\'re going to take over the world',
+      :runas    => ['animaniacs'],
+      :cmnds    => ['/bin/bash'],
+      :tags     => ['LOG_INPUT', 'LOG_OUTPUT'],
+      :defaults => [ 'env_keep += "SSH_AUTH_SOCK"' ],
+      :prefix   => '00'
+    } }
+
+    it { should contain_file('/etc/sudoers.d/00_world_domination').with_content(/^# Today\swe\'re\sgoing\sto\stake\sover\sthe\sworld$/) }
+
+  end
+
   if (Puppet.version >= '3.5.0')
     context "validating content with puppet #{Puppet.version}" do
       let(:params) { { :users => ['joe'] } }
