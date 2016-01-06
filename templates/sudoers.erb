@@ -18,5 +18,5 @@ Defaults!<%= @sane_name.upcase %>_CMNDS <%= @defaults.class == Array ? @defaults
 <% if @users then -%>
 <%= @sane_name.upcase %>_USERS <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
 <% else -%>
-%<%= @group %> <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
+<%= @group %> <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= @tags.map{|x| x.sub(/$/, ':')}.join(' ') %> <%= @sane_name.upcase %>_CMNDS
 <% end -%>
