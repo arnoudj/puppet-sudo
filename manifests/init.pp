@@ -45,6 +45,7 @@ class sudo (
 ) {
 
   create_resources('sudo::sudoers', $sudoers)
+
   if $manage_package {
     package { 'sudo':
       ensure  => latest
