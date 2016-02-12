@@ -61,6 +61,21 @@ describe 'sudo::sudoers', :type => :define do
     it { should contain_file('/etc/sudoers.d/world_domination').with_content(/^WORLD_DOMINATION_USERS\sWORLD_DOMINATION_HOSTS\s=\s\(WORLD_DOMINATION_RUNAS\)\sNOPASSWD:\sWORLD_DOMINATION_CMNDS$/) }
 
     it { should contain_file('/etc/sudoers.d/world_domination').with_content(/Defaults!WORLD_DOMINATION_CMNDS env_keep \+= "KRB5CCNAME"/) }
+
+  context 'giving an incorrect type for a group' do
+    let(:params) { {
+      :group    => ['lab'],
+      :comment  => 'Today we\'re going to take over the world',
+      :runas    => ['animaniacs'],
+      :cmnds    => ['/bin/bash'],
+      :tags     => ['LOG_INPUT', 'LOG_OUTPUT'],
+      :defaults => [ 'env_keep += "SSH_AUTH_SOCK"' ]
+    } }
+
+    it 'should fail' do
+      expect { should contain_file('/etc/sudoers.d/world_domination') }.to raise_error(Puppet::Error, /\["lab"] is not a string.  It looks to be a Array/)
+    end
+
   end
 
   if (Puppet.version >= '3.5.0')
