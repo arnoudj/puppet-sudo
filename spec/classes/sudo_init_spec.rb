@@ -14,7 +14,7 @@ describe 'sudo', :type => :class do
   }
 
   context 'no params' do
-    it { should contain_package('sudo').with_ensure('latest') }
+    it { should contain_package('sudo').with_ensure('installed') }
     it { should contain_file('/etc/sudoers.d/').with(
       'purge'   => 'false',
       'recurse' => 'false',

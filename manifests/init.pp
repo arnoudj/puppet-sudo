@@ -41,7 +41,7 @@ class sudo (
   $sudoers         = {},
   $manage_sudoersd = false,
   $manage_package  = true,
-  $package_ensure  = 'latest',
+  $package_ensure  = 'installed',
   $sudoers_file    = '',
 ) {
 
