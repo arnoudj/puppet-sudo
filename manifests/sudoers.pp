@@ -68,6 +68,7 @@ define sudo::sudoers (
   $runas    = ['root'],
   $tags     = [],
   $defaults = [],
+  $validate_command = '/usr/sbin/visudo -c -f %'
 ) {
 
   # filename as per the manual or aliases as per the sudoer spec must not
@@ -92,10 +93,10 @@ define sudo::sudoers (
       mode    => '0440',
     }
     if versioncmp($::puppetversion, '3.5') >= 0 {
-      File[$sudoers_user_file] { validate_cmd => '/usr/sbin/visudo -c -f %' }
+      File[$sudoers_user_file] { validate_cmd => $validate_command }
     }
     else {
-      validate_cmd(template('sudo/sudoers.erb'), '/usr/sbin/visudo -c -f', 'Visudo failed to validate sudoers content')
+      validate_cmd(template('sudo/sudoers.erb'), $validate_command, 'Visudo failed to validate sudoers content')
     }
   }
   else {
