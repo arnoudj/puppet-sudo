@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'sudo::sudoers', :type => :define do
+  let(:facts) { {:puppetversion => '3.8.5' } }
   let(:title) { 'world.domination' }
 
   context 'minimum params' do

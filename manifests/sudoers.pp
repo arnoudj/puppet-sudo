@@ -91,7 +91,7 @@ define sudo::sudoers (
       group   => 'root',
       mode    => '0440',
     }
-    if versioncmp($::puppetversion, '3.5') >= 0 {
+    if versioncmp("${::puppetversion}", '3.5') >= 0 {
       File[$sudoers_user_file] { validate_cmd => '/usr/sbin/visudo -c -f %' }
     }
     else {

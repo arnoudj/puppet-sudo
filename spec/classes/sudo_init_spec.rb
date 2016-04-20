@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'sudo', :type => :class do
+  let(:facts) { {:puppetversion => '3.8.5' } }
   $testdata = {
      'world.domination' => {
        'ensure'  => 'present',
