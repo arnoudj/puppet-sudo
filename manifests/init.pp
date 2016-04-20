@@ -41,15 +41,14 @@ class sudo (
   $sudoers         = {},
   $manage_sudoersd = false,
   $manage_package  = true,
-  $sudoers_file    = ''
+  $package_ensure  = 'latest',
+  $sudoers_file    = '',
 ) {
 
   create_resources('sudo::sudoers', $sudoers)
 
   if $manage_package {
-    package { 'sudo':
-      ensure  => latest
-    }
+    ensure_packages (['sudo'], {'ensure' => $package_ensure})
   }
 
   file { '/etc/sudoers.d':
