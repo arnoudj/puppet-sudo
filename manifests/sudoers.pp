@@ -19,13 +19,14 @@
 #   Group that can run the listed commands. Cannot be combined with users.
 #
 # [*hosts*]
-# Array of hosts that the command(s) can be executed on. Denying hosts using a bang/exclamation point may also be used.
-#
-# [*cmnds*]
-#   List of commands that the user can run.
+#   Array of hosts that the command(s) can be executed on. Denying hosts using a
+#   bang/exclamation point may also be used.
 #
 # [*runas*]
 #   The user that the command may be run as.
+#
+# [*comment*]
+#   Comment to be included in the config file.
 #
 # [*cmnds*]
 #   The commands which the user is allowed to run.
@@ -37,6 +38,11 @@
 #
 # [*defaults*]
 #   Override some of the compiled in default values for sudo.
+#
+# [*priority*]
+#   Priority of the sudoers entry. Can be a two digit number, or an empty string.
+#   Highest priority wins.
+#   Defaults to 50.
 #
 # === Examples
 #
@@ -59,25 +65,38 @@
 # Copyright 2015 Arnoud de Jonge
 #
 define sudo::sudoers (
+  $ensure   = 'present',
   $users    = undef,
   $group    = undef,
   $hosts    = 'ALL',
   $cmnds    = 'ALL',
   $comment  = undef,
-  $ensure   = 'present',
   $runas    = ['root'],
   $tags     = [],
   $defaults = [],
+  $priority = 50,
 ) {
+
+  # Priority, since the order of multiple matching rules matters (the
+  # last one found is used), optional and with '_' separator added
+  if $priority != '' {
+    if "${priority}" !~ /^[[:digit:]]{2}$/ {
+      fail "Invalid priority \"${priority}\", should be two digits"
+    } else {
+      $sane_priority = "${priority}-"
+    }
+  } else {
+    $sane_priority = ''
+  }
 
   # filename as per the manual or aliases as per the sudoer spec must not
   # contain dots.
   # As having dots in a username is legit, let's fudge
   $sane_name = regsubst($name, '\.', '_', 'G')
-  $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
+  $sudoers_user_file = "/etc/sudoers.d/${sane_priority}${sane_name}"
 
   if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
-    fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
+    fail "Will not create sudoers file \"${sudoers_user_file}\" (for \"${name}\") should consist of letters numbers or underscores."
   }
 
   if $users != undef and $group != undef {

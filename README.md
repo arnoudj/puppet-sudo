@@ -73,6 +73,13 @@ NOSETENV, LOG_INPUT, NOLOG_INPUT, LOG_OUTPUT and NOLOG_OUTPUT.
 
 Override some of the compiled in default values for sudo.
 
+### prefix
+
+Prefix for the file created for the rule, when ordering matters as the last
+one matching is the one taken into account. Typically '00', '50', '99', etc.
+The default is no prefix, with the file named after the title. When a prefix
+is set, the file name becomes prefix + underscore + title.
+
 ## Example
 
 A sudoers entry can be defined within a class or node definition:

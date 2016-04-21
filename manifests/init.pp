@@ -11,6 +11,14 @@
 # [*manage_sudoersd*]
 #   Boolean - should puppet clean /etc/sudoers.d/ of untracked files?
 #
+# [*manage_package*]
+#   Boolean - should puppet manage the sudo package?
+#
+# [*package_ensure*]
+#   Set the ensure variable for the sudo package. Can be 'installed'
+#   'latest' or a specific version.
+#   Defaults to installed.
+#
 # [*sudoers_file*]
 #   File that should be installed as /etc/sudoers
 #
