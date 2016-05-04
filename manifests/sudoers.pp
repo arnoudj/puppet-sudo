@@ -27,6 +27,9 @@
 # [*runas*]
 #   The user that the command may be run as.
 #
+# [*context*]
+#   The SELinux domain and role the command will be run as by default.
+#
 # [*cmnds*]
 #   The commands which the user is allowed to run.
 #
@@ -45,6 +48,7 @@
 #   comment  => 'World domination.',
 #   users    => ['pinky', 'brain'],
 #   runas    => ['root'],
+#   context  => 'TYPE=unconfined_t ROLE=unconfined_r',
 #   cmnds    => ['/bin/bash'],
 #   tags     => ['NOPASSWD'],
 #   defaults => [ 'env_keep += "SSH_AUTH_SOCK"' ]
@@ -66,6 +70,7 @@ define sudo::sudoers (
   $comment  = undef,
   $ensure   = 'present',
   $runas    = ['root'],
+  $context  = undef,
   $tags     = [],
   $defaults = [],
 ) {
