@@ -83,8 +83,6 @@ define sudo::sudoers (
     ensure_resource('class', '::sudo::os_specific', $os_specific_override)
   }
 
-  $os_specific = Class['::sudo::os_specific']
-
   # Priority, since the order of multiple matching rules matters (the
   # last one found is used), optional and with '_' separator added
   if $priority != '' {
@@ -101,7 +99,7 @@ define sudo::sudoers (
   # contain dots.
   # As having dots in a username is legit, let's fudge
   $sane_name = regsubst($name, '\.', '_', 'G')
-  $sudoers_user_file = "${os_specific::sudoers_directory}/${sane_priority}${sane_name}"
+  $sudoers_user_file = "${sudo::os_specific::sudoers_directory}/${sane_priority}${sane_name}"
 
   if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
     fail "Will not create sudoers file \"${sudoers_user_file}\" (for \"${name}\") should consist of letters numbers or underscores."
@@ -116,15 +114,15 @@ define sudo::sudoers (
   if $ensure == 'present' {
     file { $sudoers_user_file:
       content => template('sudo/sudoers.erb'),
-      owner   => $os_specific::root_user,
-      group   => $os_specific::root_group,
+      owner   => $sudo::os_specific::root_user,
+      group   => $sudo::os_specific::root_group,
       mode    => '0440',
     }
     if versioncmp("${::puppetversion}", '3.5') >= 0 {
-      File[$sudoers_user_file] { validate_cmd => "${os_specific::visudo_path} -c -f %" }
+      File[$sudoers_user_file] { validate_cmd => "${sudo::os_specific::visudo_path} -c -f %" }
     }
     else {
-      validate_cmd(template('sudo/sudoers.erb'), "${os_specific::visudo_path} -c -f", 'Visudo failed to validate sudoers content')
+      validate_cmd(template('sudo/sudoers.erb'), "${sudo::os_specific::visudo_path} -c -f", 'Visudo failed to validate sudoers content')
     }
   }
   else {

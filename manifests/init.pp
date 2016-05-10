@@ -58,20 +58,16 @@ class sudo (
     ensure_resource('class', '::sudo::os_specific', $os_specific_override)
   }
 
-  $os_specific = Class['::sudo::os_specific']
-
-  create_resources('sudo::sudoers', $sudoers, {
-    os_specific_override => $os_specific_override
-  })
+  create_resources('sudo::sudoers', $sudoers)
 
   if $manage_package {
     ensure_packages (['sudo'], {'ensure' => $package_ensure})
   }
 
-  file { $os_specific::sudoers_directory:
+  file { $sudo::os_specific::sudoers_directory:
     ensure  => directory,
-    owner   => $os_specific::root_user,
-    group   => $os_specific::root_group,
+    owner   => $sudo::os_specific::root_user,
+    group   => $sudo::os_specific::root_group,
     mode    => '0750',
     purge   => $manage_sudoersd,
     recurse => $manage_sudoersd,
@@ -79,10 +75,10 @@ class sudo (
   }
 
   if $sudoers_file =~ /^puppet:\/\// {
-    file { $os_specific::sudoers_file_path:
+    file { $sudo::os_specific::sudoers_file_path:
       ensure => file,
-      owner  => $os_specific::root_user,
-      group  => $os_specific::root_group,
+      owner  => $sudo::os_specific::root_user,
+      group  => $sudo::os_specific::root_group,
       mode   => '0440',
       source => $sudoers_file,
     }
