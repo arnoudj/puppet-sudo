@@ -64,18 +64,26 @@
 #
 # Copyright 2015 Arnoud de Jonge
 #
+
 define sudo::sudoers (
-  $ensure   = 'present',
-  $users    = undef,
-  $group    = undef,
-  $hosts    = 'ALL',
-  $cmnds    = 'ALL',
-  $comment  = undef,
-  $runas    = ['root'],
-  $tags     = [],
-  $defaults = [],
-  $priority = 50,
+  $ensure               = 'present',
+  $users                = undef,
+  $group                = undef,
+  $hosts                = 'ALL',
+  $cmnds                = 'ALL',
+  $comment              = undef,
+  $runas                = ['root'],
+  $tags                 = [],
+  $defaults             = [],
+  $priority             = 50,
+  $os_specific_override = {},
 ) {
+
+  if ! defined(Class['::sudo::os_specific']) {
+    ensure_resource('class', '::sudo::os_specific', $os_specific_override)
+  }
+
+  $os_specific = Class['::sudo::os_specific']
 
   # Priority, since the order of multiple matching rules matters (the
   # last one found is used), optional and with '_' separator added
@@ -93,7 +101,7 @@ define sudo::sudoers (
   # contain dots.
   # As having dots in a username is legit, let's fudge
   $sane_name = regsubst($name, '\.', '_', 'G')
-  $sudoers_user_file = "/etc/sudoers.d/${sane_priority}${sane_name}"
+  $sudoers_user_file = "${os_specific::sudoers_directory}/${sane_priority}${sane_name}"
 
   if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
     fail "Will not create sudoers file \"${sudoers_user_file}\" (for \"${name}\") should consist of letters numbers or underscores."
@@ -102,21 +110,21 @@ define sudo::sudoers (
   if $users != undef and $group != undef {
     fail 'You cannot define both a list of users and a group. Choose one.'
   }
-  
+
   validate_string($group)
 
   if $ensure == 'present' {
     file { $sudoers_user_file:
       content => template('sudo/sudoers.erb'),
-      owner   => 'root',
-      group   => 'root',
+      owner   => $os_specific::root_user,
+      group   => $os_specific::root_group,
       mode    => '0440',
     }
     if versioncmp("${::puppetversion}", '3.5') >= 0 {
-      File[$sudoers_user_file] { validate_cmd => '/usr/sbin/visudo -c -f %' }
+      File[$sudoers_user_file] { validate_cmd => "${os_specific::visudo_path} -c -f %" }
     }
     else {
-      validate_cmd(template('sudo/sudoers.erb'), '/usr/sbin/visudo -c -f', 'Visudo failed to validate sudoers content')
+      validate_cmd(template('sudo/sudoers.erb'), "${os_specific::visudo_path} -c -f", 'Visudo failed to validate sudoers content')
     }
   }
   else {
