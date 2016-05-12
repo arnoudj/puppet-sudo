@@ -38,11 +38,14 @@
 # Copyright 2015 Arnoud de Jonge
 #
 class sudo (
-  $sudoers         = {},
-  $manage_sudoersd = false,
-  $manage_package  = true,
-  $sudoers_file    = ''
-) {
+  $sudoers           = {},
+  $manage_sudoersd   = false,
+  $manage_package    = true,
+  $sudoers_file      = '',
+  $root_group        = $::sudo::params::root_group,
+  $sudoers_directory = $::sudo::params::sudoers_directory,
+  $sudoers_file_path = $::sudo::params::sudoers_file_path,
+) inherits sudo::params {
 
   create_resources('sudo::sudoers', $sudoers)
 
@@ -52,10 +55,10 @@ class sudo (
     }
   }
 
-  file { '/etc/sudoers.d':
+  file { $sudoers_directory:
     ensure  => directory,
     owner   => 'root',
-    group   => 'root',
+    group   => $root_group,
     mode    => '0750',
     purge   => $manage_sudoersd,
     recurse => $manage_sudoersd,
@@ -63,7 +66,7 @@ class sudo (
   }
 
   if $sudoers_file =~ /^puppet:\/\// {
-    file { '/etc/sudoers':
+    file { $sudoers_file_path:
       ensure => file,
       owner  => 'root',
       group  => 'root',
