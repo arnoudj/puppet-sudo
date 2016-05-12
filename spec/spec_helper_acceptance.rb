@@ -1,9 +1,14 @@
-require 'beaker-rspec/spec_helper'
-require 'beaker-rspec/helpers/serverspec'
+require 'beaker-rspec'
 
 hosts.each do |host|
   # Install Puppet
-  install_puppet
+  if host['platform'] =~ /freebsd/
+    # Beaker tries to install sysutils/puppet
+    # It's now been renamed to sysutils/puppet38
+    host.install_package('sysutils/puppet38')
+  else
+    install_puppet
+  end
 end
 
 RSpec.configure do |c|
