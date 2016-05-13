@@ -68,13 +68,21 @@ define sudo::sudoers (
   $runas    = ['root'],
   $tags     = [],
   $defaults = [],
+  $sudoers_directory = $::sudo::params::sudoers_directory,
+  $validate_cmd      = $::sudo::params::visudo_path,
+  $root_group        = $::sudo::params::root_group,
 ) {
+
+  # The base class must be included first because it is used by parameter defaults
+  if ! defined(Class['sudo']) {
+    fail('You must include the sudo base class before using any sudo::sudoers defined resources. Add `include ::sudo:` to your manifest')
+  }
 
   # filename as per the manual or aliases as per the sudoer spec must not
   # contain dots.
   # As having dots in a username is legit, let's fudge
   $sane_name = regsubst($name, '\.', '_', 'G')
-  $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
+  $sudoers_user_file = "${sudoers_directory}/${sane_name}"
 
   if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
     fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
@@ -88,7 +96,7 @@ define sudo::sudoers (
     file { $sudoers_user_file:
       content => template('sudo/sudoers.erb'),
       owner   => 'root',
-      group   => 'root',
+      group   => $root_group,
       mode    => '0440',
     }
     if versioncmp($::puppetversion, '3.5') >= 0 {

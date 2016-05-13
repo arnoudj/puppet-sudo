@@ -13,7 +13,13 @@ describe 'sudo class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
-    describe file('/etc/sudoers.d/') do
+    if fact('osfamily') =~ /freebsd/i
+      @folder_dir = '/usr/local/etc/sudoers.d'
+    else
+      @folder_dir = '/etc/sudoers.d/'
+    end
+
+    describe file(@folder_dir) do
       it { should be_mode 750 }
       it { should be_owned_by 'root' }
     end

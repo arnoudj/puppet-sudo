@@ -16,9 +16,12 @@ group :development do
   gem "vagrant-wrapper"
   gem "puppet-blacksmith"
   gem "guard-rake"
+  gem 'listen', '<= 3.0.6', :require => false
 end
 
 group :system_tests do
   gem 'beaker-rspec', :require => false
   gem 'serverspec', :require => false
+  gem 'signet', git: "https://github.com/google/signet.git"
+  gem 'specinfra'
 end
