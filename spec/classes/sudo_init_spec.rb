@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'sudo', :type => :class do
-  let(:facts) { {:puppetversion => '3.8.5' } }
+  let(:facts) { {:puppetversion => '3.8.5', :osfamily => 'Debian' } }
   $testdata = {
      'world.domination' => {
        'ensure'  => 'present',
@@ -19,6 +19,23 @@ describe 'sudo', :type => :class do
       'purge'   => 'false',
       'recurse' => 'false',
       'force'   => 'false'
+    ) }
+  end
+
+  context 'no params on freebsd' do
+    let(:facts) { {:osfamily => 'FreeBSD' } }
+    it { should contain_file('/usr/local/etc/sudoers.d/').with(
+      'owner' => 'root',
+      'group' => 'wheel'
+    ) }
+  end
+
+  context 'override os specific parameters' do
+    let(:facts) { {:osfamily => 'FreeBSD' } }
+    let(:params) { { :os_specific_override => { 'sudoers_directory' => '/tmp/sudoers.d'} } }
+    it { should contain_file('/tmp/sudoers.d/').with(
+      'owner' => 'root',
+      'group' => 'wheel'
     ) }
   end
 

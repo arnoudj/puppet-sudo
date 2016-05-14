@@ -16,6 +16,26 @@ line:
 
     #include /etc/sudoers.d
 
+The following OSs are also supported, even though they store the sudoers.d in
+a different location:
+
+ * FreeBSD
+
+If your OS is not supported, you can add support by adding your OS specific
+settings to the `manifests/os_specific.pp` file.
+
+Alternatively, you can also override all os specific settings as follows:
+
+```puppet
+class { 'sudo' :: 
+  ...
+  os_specific_override => {
+    sudoers_file_path => '/etc/sandwichmakers',
+    sudoers_directory => '/etc/sandwichmakers.d'
+  }
+}
+```
+
 ## Parameters for class sudo
 
 ### sudoers

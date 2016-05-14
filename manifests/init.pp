@@ -46,12 +46,17 @@
 # Copyright 2015 Arnoud de Jonge
 #
 class sudo (
-  $sudoers         = {},
-  $manage_sudoersd = false,
-  $manage_package  = true,
-  $package_ensure  = 'installed',
-  $sudoers_file    = '',
+  $sudoers              = {},
+  $manage_sudoersd      = false,
+  $manage_package       = true,
+  $package_ensure       = 'installed',
+  $sudoers_file         = '',
+  $os_specific_override = {}
 ) {
+
+  if ! defined(Class['::sudo::os_specific']) {
+    ensure_resource('class', '::sudo::os_specific', $os_specific_override)
+  }
 
   create_resources('sudo::sudoers', $sudoers)
 
@@ -59,10 +64,10 @@ class sudo (
     ensure_packages (['sudo'], {'ensure' => $package_ensure})
   }
 
-  file { '/etc/sudoers.d':
+  file { $sudo::os_specific::sudoers_directory:
     ensure  => directory,
-    owner   => 'root',
-    group   => 'root',
+    owner   => $sudo::os_specific::root_user,
+    group   => $sudo::os_specific::root_group,
     mode    => '0750',
     purge   => $manage_sudoersd,
     recurse => $manage_sudoersd,
@@ -70,10 +75,10 @@ class sudo (
   }
 
   if $sudoers_file =~ /^puppet:\/\// {
-    file { '/etc/sudoers':
+    file { $sudo::os_specific::sudoers_file_path:
       ensure => file,
-      owner  => 'root',
-      group  => 'root',
+      owner  => $sudo::os_specific::root_user,
+      group  => $sudo::os_specific::root_group,
       mode   => '0440',
       source => $sudoers_file,
     }
