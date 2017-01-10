@@ -74,7 +74,10 @@ define sudo::sudoers (
   # contain dots.
   # As having dots in a username is legit, let's fudge
   $sane_name = regsubst($name, '\.', '_', 'G')
-  $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
+  $sudoers_user_file = $::osfamily ? {
+    /FreeBSD/ => "/usr/local/etc/sudoers.d/${sane_name}",
+    default   => "/etc/sudoers.d/${sane_name}",
+  }
 
   if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
     fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
@@ -88,14 +91,18 @@ define sudo::sudoers (
     file { $sudoers_user_file:
       content => template('sudo/sudoers.erb'),
       owner   => 'root',
-      group   => 'root',
+      group   => 0,
       mode    => '0440',
     }
+    $visudo = $::osfamily ? {
+    /FreeBSD/ => '/usr/local/sbin/visudo',
+    default   => '/usr/sbin/visudo',
+  }
     if versioncmp($::puppetversion, '3.5') >= 0 {
-      File[$sudoers_user_file] { validate_cmd => '/usr/sbin/visudo -c -f %' }
+      File[$sudoers_user_file] { validate_cmd => "${visudo} -c -f %" }
     }
     else {
-      validate_cmd(template('sudo/sudoers.erb'), '/usr/sbin/visudo -c -f', 'Visudo failed to validate sudoers content')
+      validate_cmd(template('sudo/sudoers.erb'), "${visudo} -c -f", 'Visudo failed to validate sudoers content')
     }
   }
   else {

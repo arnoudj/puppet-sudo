@@ -44,6 +44,11 @@ class sudo (
   $sudoers_file    = ''
 ) {
 
+  $sysconfdir = $::osfamily ? {
+    /FreeBSD/ => '/usr/local/etc',
+    default   => '/etc',
+  }
+
   create_resources('sudo::sudoers', $sudoers)
 
   if $manage_package {
@@ -52,10 +57,10 @@ class sudo (
     }
   }
 
-  file { '/etc/sudoers.d':
+  file { "${sysconfdir}/sudoers.d":
     ensure  => directory,
     owner   => 'root',
-    group   => 'root',
+    group   => 0,
     mode    => '0750',
     purge   => $manage_sudoersd,
     recurse => $manage_sudoersd,
@@ -63,10 +68,10 @@ class sudo (
   }
 
   if $sudoers_file =~ /^puppet:\/\// {
-    file { '/etc/sudoers':
+    file { "${sysconfdir}/sudoers":
       ensure => file,
       owner  => 'root',
-      group  => 'root',
+      group  => 0,
       mode   => '0440',
       source => $sudoers_file,
     }
