@@ -74,7 +74,10 @@ define sudo::sudoers (
   # contain dots.
   # As having dots in a username is legit, let's fudge
   $sane_name = regsubst($name, '\.', '_', 'G')
-  $sudoers_user_file = "/etc/sudoers.d/${sane_name}"
+  $sudoers_user_file = $::osfamily ? {
+    /FreeBSD/ => "/usr/local/etc/sudoers.d/${sane_name}",
+    default   => "/etc/sudoers.d/${sane_name}",
+  }
 
   if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
     fail "Will not create sudoers file \"${sudoers_user_file}\" (for user \"${name}\") should consist of letters numbers or underscores."
