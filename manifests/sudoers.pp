@@ -91,7 +91,7 @@ define sudo::sudoers (
     file { $sudoers_user_file:
       content => template('sudo/sudoers.erb'),
       owner   => 'root',
-      group   => 'root',
+      group   => 0,
       mode    => '0440',
     }
     $visudo = $::osfamily ? {

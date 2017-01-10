@@ -60,7 +60,7 @@ class sudo (
   file { "${sysconfdir}/sudoers.d":
     ensure  => directory,
     owner   => 'root',
-    group   => 'root',
+    group   => 0,
     mode    => '0750',
     purge   => $manage_sudoersd,
     recurse => $manage_sudoersd,
@@ -71,7 +71,7 @@ class sudo (
     file { "${sysconfdir}/sudoers":
       ensure => file,
       owner  => 'root',
-      group  => 'root',
+      group  => 0,
       mode   => '0440',
       source => $sudoers_file,
     }
