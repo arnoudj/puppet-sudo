@@ -94,11 +94,15 @@ define sudo::sudoers (
       group   => 'root',
       mode    => '0440',
     }
+    $visudo = $::osfamily ? {
+    /FreeBSD/ => '/usr/local/sbin/visudo',
+    default   => '/usr/sbin/visudo',
+  }
     if versioncmp($::puppetversion, '3.5') >= 0 {
-      File[$sudoers_user_file] { validate_cmd => '/usr/sbin/visudo -c -f %' }
+      File[$sudoers_user_file] { validate_cmd => "${visudo} -c -f %" }
     }
     else {
-      validate_cmd(template('sudo/sudoers.erb'), '/usr/sbin/visudo -c -f', 'Visudo failed to validate sudoers content')
+      validate_cmd(template('sudo/sudoers.erb'), "${visudo} -c -f", 'Visudo failed to validate sudoers content')
     }
   }
   else {
