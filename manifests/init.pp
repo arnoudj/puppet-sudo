@@ -38,13 +38,13 @@
 # Copyright 2015 Arnoud de Jonge
 #
 class sudo (
-  $sudoers         = {},
+  $_sudoers = hiera_hash('sudo::sudoers', {}),
   $manage_sudoersd = false,
   $manage_package  = true,
   $sudoers_file    = ''
 ) {
 
-  create_resources('sudo::sudoers', $sudoers)
+  create_resources('sudo::sudoers', $_sudoers)
 
   if $manage_package {
     package { 'sudo':
