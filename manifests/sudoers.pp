@@ -1,7 +1,7 @@
 # == Define: sudo
 #
 # Allow restricted root access for specified users. The name of the defined
-# type must consist of only letters, numbers and underscores. If the name
+# type must consist of only letters, numbers, dashes and underscores. If the name
 # has incorrect characters the defined type will fail.
 #
 # === Parameters
@@ -16,7 +16,8 @@
 #   Array of users that are allowed to execute the command(s).
 #
 # [*group*]
-#   Group that can run the listed commands. Cannot be combined with users.
+#   String or array of groups that can run the listed commands. 
+#   Cannot be combined with users.
 #
 # [*hosts*]
 #   Array of hosts that the command(s) can be executed on. Denying hosts using a
@@ -90,20 +91,24 @@ define sudo::sudoers (
   }
 
   # filename as per the manual or aliases as per the sudoer spec must not
-  # contain dots.
+  # contain dots.  Replaces dashes with underscores, too.
   # As having dots in a username is legit, let's fudge
-  $sane_name = regsubst($name, '\.', '_', 'G')
+  $sane_name = regsubst($name, '[\.-]', '_', 'G')
   $sudoers_user_file = "/etc/sudoers.d/${sane_priority}${sane_name}"
 
-  if $sane_name !~ /^[A-Za-z][A-Za-z0-9_]*$/ {
-    fail "Will not create sudoers file \"${sudoers_user_file}\" (for \"${name}\") should consist of letters numbers or underscores."
+  if $sane_name !~ /^[A-Za-z][A-Za-z0-9_\-]*$/ {
+    fail "Will not create sudoers file \"${sudoers_user_file}\" (for \"${name}\") should consist of letters, numbers, dashes or underscores."
   }
 
   if $users != undef and $group != undef {
     fail 'You cannot define both a list of users and a group. Choose one.'
   }
-  
-  validate_string($group)
+
+  case type3x($group) {
+    'string': { $group_array = [ $group ] }
+    'array': { $group_array = $group  }
+    default: { fail('$group must be a string or an array. ') }
+  }
 
   if $ensure == 'present' {
     file { $sudoers_user_file:

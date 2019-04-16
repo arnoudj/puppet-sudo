@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/arnoudj/puppet-sudo.png?branch=master)](https://travis-ci.org/arnoudj/puppet-sudo)
 
 Allow restricted root access for specified users. The name of the defined
-type must consist of only letters, numbers and underscores and should be
+type must consist of only letters, numbers, dashes and underscores and should be
 unique. If the name has incorrect characters the defined type will fail.
 Sudoers entries realised with the `sudo::sudoers` defined type will be
 stored in `"/etc/sudoers.d/[typename]"`.
@@ -45,7 +45,7 @@ Array of users that are allowed to execute the command(s).
 
 ### group
 
-Group that is allowed to execute the command(s). Cannot be combined with 'users'.
+String or array of groups that are allowed to execute the command(s).  Cannot be combined with 'users'.
 
 ### hosts
 

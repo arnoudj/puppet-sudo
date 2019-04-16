@@ -23,5 +23,7 @@ Defaults!<%= @sane_name.upcase %>_CMNDS <%= @defaults.class == Array ? @defaults
 <% if @users then -%>
 <%= @sane_name.upcase %>_USERS <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= tags %> <%= @sane_name.upcase %>_CMNDS
 <% else -%>
-%<%= @group %> <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= tags %> <%= @sane_name.upcase %>_CMNDS
+<% @group_array.each do |this_group| -%>
+%<%= this_group %> <%= @sane_name.upcase %>_HOSTS = (<%= @sane_name.upcase %>_RUNAS) <%= tags %> <%= @sane_name.upcase %>_CMNDS
+<% end -%>
 <% end -%>
